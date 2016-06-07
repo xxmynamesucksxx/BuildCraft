@@ -8,9 +8,9 @@ import java.text.DecimalFormat;
 
 import com.google.common.base.Splitter;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.Vec3i;
 
 public final class BCStringUtils {
@@ -46,7 +46,7 @@ public final class BCStringUtils {
     }
 
     // Displaying objects
-    public static String vec3ToDispString(Vec3 vec) {
+    public static String vec3ToDispString(Vec3d vec) {
         if (vec == null) return "null";
         StringBuilder builder = new StringBuilder();
         builder.append(displayDecimalFormat.format(vec.xCoord));

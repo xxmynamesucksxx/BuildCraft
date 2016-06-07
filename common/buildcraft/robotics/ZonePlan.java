@@ -10,9 +10,9 @@ import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.ChunkPos;
 
 import net.minecraftforge.common.util.Constants;
 
@@ -22,12 +22,12 @@ import buildcraft.api.core.IZone;
 import io.netty.buffer.ByteBuf;
 
 public class ZonePlan implements IZone, ISerializable {
-    private final HashMap<ChunkCoordIntPair, ZoneChunk> chunkMapping = new HashMap<>();
+    private final HashMap<ChunkPos, ZoneChunk> chunkMapping = new HashMap<>();
 
     public boolean get(int x, int z) {
         int xChunk = x >> 4;
         int zChunk = z >> 4;
-        ChunkCoordIntPair chunkId = new ChunkCoordIntPair(xChunk, zChunk);
+        ChunkPos chunkId = new ChunkPos(xChunk, zChunk);
         ZoneChunk property;
 
         if (!chunkMapping.containsKey(chunkId)) {
@@ -41,7 +41,7 @@ public class ZonePlan implements IZone, ISerializable {
     public void set(int x, int z, boolean val) {
         int xChunk = x >> 4;
         int zChunk = z >> 4;
-        ChunkCoordIntPair chunkId = new ChunkCoordIntPair(xChunk, zChunk);
+        ChunkPos chunkId = new ChunkPos(xChunk, zChunk);
         ZoneChunk property;
 
         if (!chunkMapping.containsKey(chunkId)) {
@@ -65,7 +65,7 @@ public class ZonePlan implements IZone, ISerializable {
     public void writeToNBT(NBTTagCompound nbt) {
         NBTTagList list = new NBTTagList();
 
-        for (Map.Entry<ChunkCoordIntPair, ZoneChunk> e : chunkMapping.entrySet()) {
+        for (Map.Entry<ChunkPos, ZoneChunk> e : chunkMapping.entrySet()) {
             NBTTagCompound subNBT = new NBTTagCompound();
             subNBT.setInteger("chunkX", e.getKey().chunkXPos);
             subNBT.setInteger("chunkZ", e.getKey().chunkZPos);
@@ -82,7 +82,7 @@ public class ZonePlan implements IZone, ISerializable {
         for (int i = 0; i < list.tagCount(); ++i) {
             NBTTagCompound subNBT = list.getCompoundTagAt(i);
 
-            ChunkCoordIntPair id = new ChunkCoordIntPair(subNBT.getInteger("chunkX"), subNBT.getInteger("chunkZ"));
+            ChunkPos id = new ChunkPos(subNBT.getInteger("chunkX"), subNBT.getInteger("chunkZ"));
 
             ZoneChunk chunk = new ZoneChunk();
             chunk.readFromNBT(subNBT);
@@ -100,7 +100,7 @@ public class ZonePlan implements IZone, ISerializable {
     public double distanceToSquared(BlockPos index) {
         double maxSqrDistance = Double.MAX_VALUE;
 
-        for (Map.Entry<ChunkCoordIntPair, ZoneChunk> e : chunkMapping.entrySet()) {
+        for (Map.Entry<ChunkPos, ZoneChunk> e : chunkMapping.entrySet()) {
             double dx = (e.getKey().chunkXPos << 4 + 8) - index.getX();
             double dz = (e.getKey().chunkZPos << 4 + 8) - index.getZ();
 
@@ -115,7 +115,7 @@ public class ZonePlan implements IZone, ISerializable {
     }
 
     @Override
-    public boolean contains(Vec3 point) {
+    public boolean contains(Vec3d point) {
         int xBlock = (int) Math.floor(point.xCoord);
         int zBlock = (int) Math.floor(point.zCoord);
 
@@ -130,7 +130,7 @@ public class ZonePlan implements IZone, ISerializable {
 
         int chunkId = rand.nextInt(chunkMapping.size());
 
-        for (Map.Entry<ChunkCoordIntPair, ZoneChunk> e : chunkMapping.entrySet()) {
+        for (Map.Entry<ChunkPos, ZoneChunk> e : chunkMapping.entrySet()) {
             if (chunkId == 0) {
                 BlockPos i = e.getValue().getRandomBlockPos(rand);
                 int x = (e.getKey().chunkXPos << 4) + i.getX();
@@ -150,7 +150,7 @@ public class ZonePlan implements IZone, ISerializable {
         chunkMapping.clear();
         int size = stream.readInt();
         for (int i = 0; i < size; i++) {
-            ChunkCoordIntPair key = new ChunkCoordIntPair(stream.readInt(), stream.readInt());
+            ChunkPos key = new ChunkPos(stream.readInt(), stream.readInt());
             ZoneChunk value = new ZoneChunk();
             value.readData(stream);
             chunkMapping.put(key, value);
@@ -160,7 +160,7 @@ public class ZonePlan implements IZone, ISerializable {
     @Override
     public void writeData(ByteBuf stream) {
         stream.writeInt(chunkMapping.size());
-        for (Map.Entry<ChunkCoordIntPair, ZoneChunk> e : chunkMapping.entrySet()) {
+        for (Map.Entry<ChunkPos, ZoneChunk> e : chunkMapping.entrySet()) {
             stream.writeInt(e.getKey().chunkXPos);
             stream.writeInt(e.getKey().chunkZPos);
             e.getValue().writeData(stream);

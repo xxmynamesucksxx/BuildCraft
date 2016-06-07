@@ -5,7 +5,7 @@
 package buildcraft.core.lib.network;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import buildcraft.core.lib.network.base.Packet;
 

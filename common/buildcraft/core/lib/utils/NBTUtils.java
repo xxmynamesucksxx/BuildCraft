@@ -12,9 +12,9 @@ import java.util.UUID;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 import net.minecraft.nbt.NBTBase.NBTPrimitive;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 import net.minecraftforge.common.util.Constants;
 
@@ -115,7 +115,7 @@ public final class NBTUtils {
         return BlockPos.ORIGIN;
     }
 
-    public static NBTTagList writeVec3(Vec3 vec3) {
+    public static NBTTagList writeVec3d(Vec3d vec3) {
         NBTTagList list = new NBTTagList();
         list.appendTag(new NBTTagDouble(vec3.xCoord));
         list.appendTag(new NBTTagDouble(vec3.yCoord));
@@ -123,12 +123,12 @@ public final class NBTUtils {
         return list;
     }
 
-    public static Vec3 readVec3(NBTTagCompound nbt, String tagName) {
-        return readVec3(nbt.getTagList(tagName, Constants.NBT.TAG_DOUBLE));
+    public static Vec3d readVec3d(NBTTagCompound nbt, String tagName) {
+        return readVec3d(nbt.getTagList(tagName, Constants.NBT.TAG_DOUBLE));
     }
 
-    public static Vec3 readVec3(NBTTagList list) {
-        return new Vec3(list.getDoubleAt(0), list.getDoubleAt(1), list.getDoubleAt(2));
+    public static Vec3d readVec3d(NBTTagList list) {
+        return new Vec3d(list.getDoubleAt(0), list.getDoubleAt(1), list.getDoubleAt(2));
     }
 
     private static final String NULL_ENUM_STRING = "_NULL";

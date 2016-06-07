@@ -22,10 +22,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumFacing.AxisDirection;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -50,9 +51,9 @@ public final class Utils {
     public static final BlockPos POS_ZERO = BlockPos.ORIGIN;
     public static final BlockPos POS_ONE = vec3i(1);
 
-    public static final Vec3 VEC_ZERO = vec3(0);
-    public static final Vec3 VEC_HALF = vec3(0.5);
-    public static final Vec3 VEC_ONE = vec3(1);
+    public static final Vec3d VEC_ZERO = vec3(0);
+    public static final Vec3d VEC_HALF = vec3(0.5);
+    public static final Vec3d VEC_ONE = vec3(1);
 
     public static final boolean CAULDRON_DETECTED;
     public static final XorShift128Random RANDOM = new XorShift128Random();
@@ -187,7 +188,7 @@ public final class Utils {
         return null;
     }
 
-    public static EntityLaser createLaser(World world, Vec3 p1, Vec3 p2, LaserKind kind) {
+    public static EntityLaser createLaser(World world, Vec3d p1, Vec3d p2, LaserKind kind) {
         if (p1.equals(p2)) {
             return null;
         }
@@ -195,19 +196,18 @@ public final class Utils {
         return block;
     }
 
-    public static EntityLaser[] createLaserBox(World world, double xMin, double yMin, double zMin, double xMax, double yMax, double zMax,
-            LaserKind kind) {
+    public static EntityLaser[] createLaserBox(World world, double xMin, double yMin, double zMin, double xMax, double yMax, double zMax, LaserKind kind) {
         EntityLaser[] lasers = new EntityLaser[12];
-        Vec3[] p = new Vec3[8];
+        Vec3d[] p = new Vec3d[8];
 
-        p[0] = new Vec3(xMin, yMin, zMin);
-        p[1] = new Vec3(xMax, yMin, zMin);
-        p[2] = new Vec3(xMin, yMax, zMin);
-        p[3] = new Vec3(xMax, yMax, zMin);
-        p[4] = new Vec3(xMin, yMin, zMax);
-        p[5] = new Vec3(xMax, yMin, zMax);
-        p[6] = new Vec3(xMin, yMax, zMax);
-        p[7] = new Vec3(xMax, yMax, zMax);
+        p[0] = new Vec3d(xMin, yMin, zMin);
+        p[1] = new Vec3d(xMax, yMin, zMin);
+        p[2] = new Vec3d(xMin, yMax, zMin);
+        p[3] = new Vec3d(xMax, yMax, zMin);
+        p[4] = new Vec3d(xMin, yMin, zMax);
+        p[5] = new Vec3d(xMax, yMin, zMax);
+        p[6] = new Vec3d(xMin, yMax, zMax);
+        p[7] = new Vec3d(xMax, yMax, zMax);
 
         lasers[0] = Utils.createLaser(world, p[0], p[1], kind);
         lasers[1] = Utils.createLaser(world, p[0], p[2], kind);
@@ -226,20 +226,20 @@ public final class Utils {
     }
 
     public static LaserData[] createLaserDataBox(double xMin, double yMin, double zMin, double xMax, double yMax, double zMax) {
-        return createLaserDataBox(new Vec3(xMin, yMin, zMin), new Vec3(xMax, yMax, zMax));
+        return createLaserDataBox(new Vec3d(xMin, yMin, zMin), new Vec3d(xMax, yMax, zMax));
     }
 
-    public static LaserData[] createLaserDataBox(Vec3 min, Vec3 max) {
+    public static LaserData[] createLaserDataBox(Vec3d min, Vec3d max) {
         LaserData[] lasers = new LaserData[12];
-        Vec3[] p = new Vec3[8];
+        Vec3d[] p = new Vec3d[8];
 
         p[0] = min;// ___
-        p[1] = new Vec3(max.xCoord, min.yCoord, min.zCoord);
-        p[2] = new Vec3(min.xCoord, max.yCoord, min.zCoord);
-        p[3] = new Vec3(max.xCoord, max.yCoord, min.zCoord);
-        p[4] = new Vec3(min.xCoord, min.yCoord, max.zCoord);
-        p[5] = new Vec3(max.xCoord, min.yCoord, max.zCoord);
-        p[6] = new Vec3(min.xCoord, max.yCoord, max.zCoord);
+        p[1] = new Vec3d(max.xCoord, min.yCoord, min.zCoord);
+        p[2] = new Vec3d(min.xCoord, max.yCoord, min.zCoord);
+        p[3] = new Vec3d(max.xCoord, max.yCoord, min.zCoord);
+        p[4] = new Vec3d(min.xCoord, min.yCoord, max.zCoord);
+        p[5] = new Vec3d(max.xCoord, min.yCoord, max.zCoord);
+        p[6] = new Vec3d(min.xCoord, max.yCoord, max.zCoord);
         p[7] = max;
 
         lasers[0] = new LaserData(p[0], p[1]);
@@ -394,9 +394,9 @@ public final class Utils {
 
     // Vector utils
 
-    /** Factory that returns a new Vec3 with the same argument for x, y and z. */
-    public static Vec3 vec3(double value) {
-        return new Vec3(value, value, value);
+    /** Factory that returns a new Vec3d with the same argument for x, y and z. */
+    public static Vec3d vec3(double value) {
+        return new Vec3d(value, value, value);
     }
 
     /** Factory that returns a new BlockPos with the same argument for x, y and z. */
@@ -410,29 +410,29 @@ public final class Utils {
     }
 
     /** Factory that converts an integer vector to a double vector. */
-    public static Vec3 convert(Vec3i vec3i) {
-        return new Vec3(vec3i.getX(), vec3i.getY(), vec3i.getZ());
+    public static Vec3d convert(Vec3i vec3i) {
+        return new Vec3d(vec3i.getX(), vec3i.getY(), vec3i.getZ());
     }
 
     /** Convert an integer vector to an equal floating point vector, 0.5 added to all coordinates (so the middle of a
      * block if this vector represents a block) */
-    public static Vec3 convertMiddle(Vec3i vec3i) {
+    public static Vec3d convertMiddle(Vec3i vec3i) {
         return convert(vec3i).add(Utils.VEC_HALF);
     }
 
-    public static Vec3 convert(EnumFacing face) {
+    public static Vec3d convert(EnumFacing face) {
         if (face == null) {
             return Utils.VEC_ZERO;
         }
-        return new Vec3(face.getFrontOffsetX(), face.getFrontOffsetY(), face.getFrontOffsetZ());
+        return new Vec3d(face.getFrontOffsetX(), face.getFrontOffsetY(), face.getFrontOffsetZ());
 
     }
 
-    public static Vec3 convert(EnumFacing face, double size) {
+    public static Vec3d convert(EnumFacing face, double size) {
         return multiply(convert(face), size);
     }
 
-    public static Vec3 convertExcept(EnumFacing face, double size) {
+    public static Vec3d convertExcept(EnumFacing face, double size) {
         int direction = face.getAxisDirection().getOffset();
         return vec3(direction * size).subtract(convert(face, size));
     }
@@ -451,13 +451,14 @@ public final class Utils {
         return axisOtherMap.get(a).get(b);
     }
 
-    // We always return BlockPos instead of Vec3i as it will be usable in all situations that Vec3i is, and all the ones
+    // We always return BlockPos instead of Vec3i as it will be usable in all situations that Vec3i is, and all the
+    // ones
     // that require BlockPos
-    public static BlockPos convertFloor(Vec3 vec) {
+    public static BlockPos convertFloor(Vec3d vec) {
         return new BlockPos(vec.xCoord, vec.yCoord, vec.zCoord);
     }
 
-    public static BlockPos convertCeiling(Vec3 vec) {
+    public static BlockPos convertCeiling(Vec3d vec) {
         return new BlockPos(Math.ceil(vec.xCoord), Math.ceil(vec.yCoord), Math.ceil(vec.zCoord));
     }
 
@@ -487,44 +488,44 @@ public final class Utils {
         return new BlockPos(x, y, z);
     }
 
-    public static Vec3 convert(Vector3f vec) {
-        return new Vec3(vec.x, vec.y, vec.z);
+    public static Vec3d convert(Vector3f vec) {
+        return new Vec3d(vec.x, vec.y, vec.z);
     }
 
-    public static Vector3f convertFloat(Vec3 vec) {
+    public static Vector3f convertFloat(Vec3d vec) {
         return new Vector3f((float) vec.xCoord, (float) vec.yCoord, (float) vec.zCoord);
     }
 
-    public static Vec3 multiply(Vec3 vec, double multiple) {
-        return new Vec3(vec.xCoord * multiple, vec.yCoord * multiple, vec.zCoord * multiple);
+    public static Vec3d multiply(Vec3d vec, double multiple) {
+        return new Vec3d(vec.xCoord * multiple, vec.yCoord * multiple, vec.zCoord * multiple);
     }
 
-    public static Vec3 divide(Vec3 vec, double divisor) {
+    public static Vec3d divide(Vec3d vec, double divisor) {
         return multiply(vec, 1 / divisor);
     }
 
-    public static Vec3 clamp(Vec3 in, Vec3 lower, Vec3 upper) {
+    public static Vec3d clamp(Vec3d in, Vec3d lower, Vec3d upper) {
         double x = MathUtils.clamp(in.xCoord, lower.xCoord, upper.xCoord);
         double y = MathUtils.clamp(in.yCoord, lower.yCoord, upper.yCoord);
         double z = MathUtils.clamp(in.zCoord, lower.zCoord, upper.zCoord);
-        return new Vec3(x, y, z);
+        return new Vec3d(x, y, z);
     }
 
-    public static Vec3 min(Vec3 one, Vec3 two) {
+    public static Vec3d min(Vec3d one, Vec3d two) {
         double x = Math.min(one.xCoord, two.xCoord);
         double y = Math.min(one.yCoord, two.yCoord);
         double z = Math.min(one.zCoord, two.zCoord);
-        return new Vec3(x, y, z);
+        return new Vec3d(x, y, z);
     }
 
-    public static Vec3 max(Vec3 one, Vec3 two) {
+    public static Vec3d max(Vec3d one, Vec3d two) {
         double x = Math.max(one.xCoord, two.xCoord);
         double y = Math.max(one.yCoord, two.yCoord);
         double z = Math.max(one.zCoord, two.zCoord);
-        return new Vec3(x, y, z);
+        return new Vec3d(x, y, z);
     }
 
-    public static Matrix3d toMatrix(Vec3 vec) {
+    public static Matrix3d toMatrix(Vec3d vec) {
         Matrix3d matrix = new Matrix3d();
         matrix.m00 = vec.xCoord;
         matrix.m11 = vec.yCoord;
@@ -532,14 +533,14 @@ public final class Utils {
         return matrix;
     }
 
-    public static Vec3 withValue(Vec3 vector, Axis axis, double value) {
-        if (axis == Axis.X) return new Vec3(value, vector.yCoord, vector.zCoord);
-        else if (axis == Axis.Y) return new Vec3(vector.xCoord, value, vector.zCoord);
-        else if (axis == Axis.Z) return new Vec3(vector.xCoord, vector.yCoord, value);
+    public static Vec3d withValue(Vec3d vector, Axis axis, double value) {
+        if (axis == Axis.X) return new Vec3d(value, vector.yCoord, vector.zCoord);
+        else if (axis == Axis.Y) return new Vec3d(vector.xCoord, value, vector.zCoord);
+        else if (axis == Axis.Z) return new Vec3d(vector.xCoord, vector.yCoord, value);
         else throw new RuntimeException("Was given a null axis! That was probably not intentional, consider this a bug! (Vector = " + vector + ")");
     }
 
-    public static double getValue(Vec3 vector, Axis axis) {
+    public static double getValue(Vec3d vector, Axis axis) {
         if (axis == Axis.X) return vector.xCoord;
         else if (axis == Axis.Y) return vector.yCoord;
         else if (axis == Axis.Z) return vector.zCoord;
@@ -560,72 +561,72 @@ public final class Utils {
         else throw new RuntimeException("Was given a null axis! That was probably not intentional, consider this a bug! (Vector = " + vector + ")");
     }
 
-    public static Vec3 getVec(Entity entity) {
-        return new Vec3(entity.posX, entity.posY, entity.posZ);
+    public static Vec3d getVec(Entity entity) {
+        return new Vec3d(entity.posX, entity.posY, entity.posZ);
     }
 
     public static BlockPos getPos(Entity entity) {
         return convertFloor(getVec(entity));
     }
 
-    public static Vec3 min(AxisAlignedBB bb) {
-        return new Vec3(bb.minX, bb.minY, bb.minZ);
+    public static Vec3d min(AxisAlignedBB bb) {
+        return new Vec3d(bb.minX, bb.minY, bb.minZ);
     }
 
-    public static Vec3 max(AxisAlignedBB bb) {
-        return new Vec3(bb.maxX, bb.maxY, bb.maxZ);
+    public static Vec3d max(AxisAlignedBB bb) {
+        return new Vec3d(bb.maxX, bb.maxY, bb.maxZ);
     }
 
     @SideOnly(Side.CLIENT)
-    public static Vec3 getInterpolatedVec(Entity entity, float partialTicks) {
+    public static Vec3d getInterpolatedVec(Entity entity, float partialTicks) {
         return entity.getPositionEyes(partialTicks).addVector(0, -entity.getEyeHeight(), 0);
     }
 
     /** Returns all of the chunks that all the block positions returned by
      * {@link #allInBoxIncludingCorners(BlockPos, BlockPos)} occupy */
-    public static Iterable<ChunkCoordIntPair> allChunksFor(BlockPos pos1, BlockPos pos2) {
+    public static Iterable<ChunkPos> allChunksFor(BlockPos pos1, BlockPos pos2) {
         BlockPos min = min(pos1, pos2);
         BlockPos max = max(pos1, pos2);
         int minX = min.getX() >> 4;
         int maxX = max.getX() >> 4;
         int minZ = min.getZ() >> 4;
         int maxZ = max.getZ() >> 4;
-        List<ChunkCoordIntPair> list = Lists.newArrayList();
+        List<ChunkPos> list = Lists.newArrayList();
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
-                list.add(new ChunkCoordIntPair(x, z));
+                list.add(new ChunkPos(x, z));
             }
         }
         return list;
     }
 
-    public static Iterable<BlockPos> allInChunk(ChunkCoordIntPair ccip) {
+    public static Iterable<BlockPos> allInChunk(ChunkPos ccip) {
         return BlockPos.getAllInBox(ccip.getBlock(0, 0, 0), ccip.getBlock(15, 255, 15));
     }
 
-    public static Vec3 getMinForFace(EnumFacing face, Vec3 min, Vec3 max) {
+    public static Vec3d getMinForFace(EnumFacing face, Vec3d min, Vec3d max) {
         if (face.getAxisDirection() == AxisDirection.NEGATIVE) {
             return min;
         }
         if (face == EnumFacing.EAST) {
-            return new Vec3(max.xCoord, min.yCoord, min.zCoord);
+            return new Vec3d(max.xCoord, min.yCoord, min.zCoord);
         } else if (face == EnumFacing.UP) {
-            return new Vec3(min.xCoord, max.yCoord, min.zCoord);
+            return new Vec3d(min.xCoord, max.yCoord, min.zCoord);
         } else {// MUST be SOUTH
-            return new Vec3(min.xCoord, min.yCoord, max.zCoord);
+            return new Vec3d(min.xCoord, min.yCoord, max.zCoord);
         }
     }
 
-    public static Vec3 getMaxForFace(EnumFacing face, Vec3 min, Vec3 max) {
+    public static Vec3d getMaxForFace(EnumFacing face, Vec3d min, Vec3d max) {
         if (face.getAxisDirection() == AxisDirection.POSITIVE) {
             return max;
         }
         if (face == EnumFacing.WEST) {
-            return new Vec3(min.xCoord, max.yCoord, max.zCoord);
+            return new Vec3d(min.xCoord, max.yCoord, max.zCoord);
         } else if (face == EnumFacing.DOWN) {
-            return new Vec3(max.xCoord, min.yCoord, max.zCoord);
+            return new Vec3d(max.xCoord, min.yCoord, max.zCoord);
         } else {// MUST be NORTH
-            return new Vec3(max.xCoord, max.yCoord, min.zCoord);
+            return new Vec3d(max.xCoord, max.yCoord, min.zCoord);
         }
     }
 
@@ -654,9 +655,9 @@ public final class Utils {
         return min(max(from, box.min()), box.max());
     }
 
-    public static AxisAlignedBB boundingBox(Vec3 pointA, Vec3 pointB) {
-        Vec3 min = min(pointA, pointB);
-        Vec3 max = max(pointA, pointB);
+    public static AxisAlignedBB boundingBox(Vec3d pointA, Vec3d pointB) {
+        Vec3d min = min(pointA, pointB);
+        Vec3d max = max(pointA, pointB);
         return new AxisAlignedBB(min.xCoord, min.yCoord, min.zCoord, max.xCoord, max.yCoord, max.zCoord);
     }
 

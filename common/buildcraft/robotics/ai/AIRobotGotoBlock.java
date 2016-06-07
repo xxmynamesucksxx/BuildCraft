@@ -13,7 +13,7 @@ import buildcraft.core.lib.utils.PathFinding;
 import buildcraft.core.lib.utils.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 public class AIRobotGotoBlock extends AIRobotGoto {

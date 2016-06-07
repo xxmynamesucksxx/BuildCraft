@@ -1,6 +1,6 @@
 package buildcraft.core.lib.utils;
 
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -31,7 +31,7 @@ public final class ThreadSafeUtils {
         // These probably won't guarantee full thread safety, but it's our best bet.
         if (!Utils.CAULDRON_DETECTED && provider instanceof ChunkProviderServer) {
             // Slight optimization
-            chunk = (Chunk) ((ChunkProviderServer) provider).id2ChunkMap.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(x, z));
+            chunk = (Chunk) ((ChunkProviderServer) provider).id2ChunkMap.getValueByKey(ChunkPos.chunkXZ2Int(x, z));
         } else {
             chunk = provider.chunkExists(x, z) ? provider.provideChunk(x, z) : null;
         }

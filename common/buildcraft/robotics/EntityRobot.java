@@ -134,7 +134,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
     private int energySpendPerCycle = 0;
     private int ticksCharging = 0;
     private float energyFX = 0;
-    private Vec3 steamDirection = new Vec3(0, -1, 0);
+    private Vec3d steamDirection = new Vec3d(0, -1, 0);
 
     public EntityRobot(World world, RedstoneBoardRobotNBT boardNBT) {
         this(world);
@@ -190,7 +190,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
         float x = dataWatcher.getWatchableObjectFloat(DATA_LASER_TAIL_X);
         float y = dataWatcher.getWatchableObjectFloat(DATA_LASER_TAIL_Y);
         float z = dataWatcher.getWatchableObjectFloat(DATA_LASER_TAIL_Z);
-        laser.tail = new Vec3(x, y, z);
+        laser.tail = new Vec3d(x, y, z);
         laser.isVisible = dataWatcher.getWatchableObjectByte(DATA_LASER_VISIBLE) == 1;
 
         RedstoneBoardNBT<?> boardNBT = RedstoneBoardRegistry.instance.getRedstoneBoard(dataWatcher.getWatchableObjectString(DATA_BOARD_ID));
@@ -232,7 +232,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
 
     public void setLaserDestination(float x, float y, float z) {
         if (x != laser.tail.xCoord || y != laser.tail.yCoord || z != laser.tail.zCoord) {
-            laser.tail = new Vec3(x, y, z);
+            laser.tail = new Vec3d(x, y, z);
             needsUpdate = true;
         }
     }
@@ -301,7 +301,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
             motionY = 0;
             motionZ = 0;
 
-            Vec3 pos = Utils.convertMiddle(currentDockingStation.getPos()).add(Utils.convert(currentDockingStation.side(), 0.5));
+            Vec3d pos = Utils.convertMiddle(currentDockingStation.getPos()).add(Utils.convert(currentDockingStation.side(), 0.5));
             posX = pos.xCoord;
             posY = pos.yCoord;
             posZ = pos.zCoord;
@@ -617,7 +617,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
             currentDockingStation.release(this);
             currentDockingStation = null;
 
-            setSteamDirection(new Vec3(0, -1, 0));
+            setSteamDirection(new Vec3d(0, -1, 0));
 
             currentDockingStationIndex = null;
             currentDockingStationSide = null;
@@ -748,7 +748,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
         }), this);
     }
 
-    private void setSteamDirection(final Vec3 direction) {
+    private void setSteamDirection(final Vec3d direction) {
         if (!worldObj.isRemote) {
             BuildCraftCore.instance.sendToEntity(new PacketCommand(this, "setSteamDirection", new CommandWriter() {
                 @Override
@@ -780,10 +780,10 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
                 lastUpdateTime = new Date().getTime();
 
                 if (!itemActive) {
-                    setSteamDirection(new Vec3(0, -1, 0));
+                    setSteamDirection(new Vec3d(0, -1, 0));
                 }
             } else if ("setSteamDirection".equals(command)) {
-                setSteamDirection(new Vec3(stream.readDouble(), stream.readDouble(), stream.readDouble()));
+                setSteamDirection(new Vec3d(stream.readDouble(), stream.readDouble(), stream.readDouble()));
             } else if ("syncWearables".equals(command)) {
                 wearables.clear();
 
@@ -818,7 +818,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
                 if (currentDockingStation != null) {
                     setSteamDirection(Utils.convert(currentDockingStation.side()));
                 } else {
-                    setSteamDirection(new Vec3(0, -1, 0));
+                    setSteamDirection(new Vec3d(0, -1, 0));
                 }
             }
         }
@@ -883,7 +883,7 @@ public class EntityRobot extends EntityRobotBase implements IEntityAdditionalSpa
 
     @Override
     public void aimItemAt(BlockPos pos) {
-        Vec3 delta = Utils.convert(pos).subtract(Utils.getVec(this));
+        Vec3d delta = Utils.convert(pos).subtract(Utils.getVec(this));
         if (delta.xCoord != 0 || delta.zCoord != 0) {
             itemAimYaw = (float) (Math.atan2(delta.xCoord, delta.zCoord) * 180f / Math.PI) + 180f;
         }

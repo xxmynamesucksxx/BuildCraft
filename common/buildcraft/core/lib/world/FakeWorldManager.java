@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 
 import buildcraft.api.core.BCLog;
@@ -146,7 +146,7 @@ public class FakeWorldManager {
     }
 
     private void renderAllBlocks(EnumWorldBlockLayer layer, WorldRenderer renderer) {
-        for (ChunkCoordIntPair ccip : Utils.allChunksFor(min, max)) {
+        for (ChunkPos ccip : Utils.allChunksFor(min, max)) {
             if (world.getChunkProvider().chunkExists(ccip.chunkXPos, ccip.chunkZPos)) {
                 Chunk chunk = world.getChunkFromChunkCoords(ccip.chunkXPos, ccip.chunkZPos);
                 boolean hasObj = false;

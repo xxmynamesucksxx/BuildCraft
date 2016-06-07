@@ -8,9 +8,9 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IProgressUpdate;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
@@ -23,7 +23,7 @@ import buildcraft.api.enums.EnumDecoratedBlock;
 import buildcraft.api.properties.BuildCraftProperties;
 
 public class FakeChunkProvider implements IChunkProvider {
-    private Map<ChunkCoordIntPair, Chunk> chunks = Maps.newHashMap();
+    private Map<ChunkPos, Chunk> chunks = Maps.newHashMap();
     private final FakeWorld world;
     private final EnumDecoratedBlock type;
 
@@ -34,12 +34,12 @@ public class FakeChunkProvider implements IChunkProvider {
 
     @Override
     public boolean chunkExists(int x, int z) {
-        return chunks.containsKey(new ChunkCoordIntPair(x, z));
+        return chunks.containsKey(new ChunkPos(x, z));
     }
 
     @Override
     public Chunk provideChunk(int chunkXPos, int chunkZPos) {
-        ChunkCoordIntPair ccip = new ChunkCoordIntPair(chunkXPos, chunkZPos);
+        ChunkPos ccip = new ChunkPos(chunkXPos, chunkZPos);
         if (!chunks.containsKey(ccip)) {
             IBlockState state = BuildCraftCore.decoratedBlock.getDefaultState();
             state = state.withProperty(BuildCraftProperties.DECORATED_BLOCK, type);

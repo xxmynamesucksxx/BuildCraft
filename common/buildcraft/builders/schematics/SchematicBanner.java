@@ -8,7 +8,7 @@ import buildcraft.api.blueprints.IBuilderContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 public class SchematicBanner extends SchematicSignLike {
     public SchematicBanner(boolean isWall) {

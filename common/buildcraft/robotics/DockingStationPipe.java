@@ -25,7 +25,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class DockingStationPipe extends DockingStation implements IRequestProvid
         @Override
         public int injectItem(ItemStack stack, boolean doAdd, EnumFacing from, EnumDyeColor color) {
             if (doAdd) {
-                Vec3 vec = Utils.convertMiddle(getPos()).add(Utils.convert(side, 0.2));
+                Vec3d vec = Utils.convertMiddle(getPos()).add(Utils.convert(side, 0.2));
                 TravelingItem item = TravelingItem.make(vec, stack);
 
                 ((PipeTransportItems) ((Pipe<?>) getPipe().getPipe()).transport).injectItem(item, from);

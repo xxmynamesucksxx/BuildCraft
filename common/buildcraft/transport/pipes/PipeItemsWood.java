@@ -13,7 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -197,7 +197,7 @@ public class PipeItemsWood extends Pipe<PipeTransportItems> implements IEnergyRe
                     continue;
                 }
 
-                Vec3 entPos = Utils.convertMiddle(tile.getPos()).add(Utils.convert(side, -0.6));
+                Vec3d entPos = Utils.convertMiddle(tile.getPos()).add(Utils.convert(side, -0.6));
 
                 TravelingItem entity = makeItem(entPos, stack);
                 entity.setSpeed(TransportConstants.PIPE_DEFAULT_SPEED);
@@ -206,7 +206,7 @@ public class PipeItemsWood extends Pipe<PipeTransportItems> implements IEnergyRe
         }
     }
 
-    protected TravelingItem makeItem(Vec3 pos, ItemStack stack) {
+    protected TravelingItem makeItem(Vec3d pos, ItemStack stack) {
         return TravelingItem.make(pos, stack);
     }
 

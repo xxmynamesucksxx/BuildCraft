@@ -14,8 +14,8 @@ import com.google.common.collect.Maps;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.config.Property;
@@ -90,7 +90,7 @@ public class BuildCraftMod implements IBuildCraftMod {
         Entity entity;
 
         EntitySendRequest(Packet packet, Entity entity, int maxDistance) {
-            super(packet, entity.worldObj.provider.getDimensionId(), Utils.getVec(entity), maxDistance);
+            super(packet, entity.worldObj.provider.getDimension(), Utils.getVec(entity), maxDistance);
             this.entity = entity;
         }
     }
@@ -113,9 +113,9 @@ public class BuildCraftMod implements IBuildCraftMod {
     class LocationSendRequest extends SendRequest {
         final int dimensionId;
         final int maxDistance;
-        final Vec3 pos;
+        final Vec3d pos;
 
-        LocationSendRequest(Packet packet, int dimensionId, Vec3 pos, int distance) {
+        LocationSendRequest(Packet packet, int dimensionId, Vec3d pos, int distance) {
             super(packet);
             this.dimensionId = dimensionId;
             this.pos = pos;
@@ -152,7 +152,7 @@ public class BuildCraftMod implements IBuildCraftMod {
     }
 
     public void sendToPlayers(Packet packet, World world, BlockPos pos, int maxDistance) {
-        addSendRequest(new LocationSendRequest(packet, world.provider.getDimensionId(), Utils.convertMiddle(pos), maxDistance));
+        addSendRequest(new LocationSendRequest(packet, world.provider.getDimension(), Utils.convertMiddle(pos), maxDistance));
     }
 
     public void sendToPlayersNear(Packet packet, TileEntity tile, int maxDistance) {
@@ -164,7 +164,7 @@ public class BuildCraftMod implements IBuildCraftMod {
     }
 
     public void sendToWorld(Packet packet, World world) {
-        addSendRequest(new WorldSendRequest(packet, world.provider.getDimensionId()));
+        addSendRequest(new WorldSendRequest(packet, world.provider.getDimension()));
     }
 
     public void sendToEntity(Packet packet, Entity entity) {

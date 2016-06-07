@@ -19,7 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.*;
 
 import java.util.BitSet;
@@ -142,7 +142,7 @@ public class PipeTransportFluids extends PipeTransport implements IFluidHandler,
     public byte[] flow = new byte[6];
 
     public double[] clientDisplayFlowConnection = new double[6];
-    public Vec3 clientDisplayFlowCenter = Utils.VEC_ZERO;
+    public Vec3d clientDisplayFlowCenter = Utils.VEC_ZERO;
     public long clientLastDisplayTime = 0;
 
     public enum TransferState {

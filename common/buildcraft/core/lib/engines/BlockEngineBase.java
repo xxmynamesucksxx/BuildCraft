@@ -39,8 +39,8 @@ public abstract class BlockEngineBase extends BlockBuildCraft implements ICustom
             AxisAlignedBB[] array = new AxisAlignedBB[2];
             boolean pos = face.getAxisDirection() == AxisDirection.POSITIVE;
 
-            Vec3 pointA = Utils.withValue(Utils.VEC_ZERO, face.getAxis(), pos ? 0 : 0.5);
-            Vec3 pointB = Utils.withValue(Utils.VEC_ONE, face.getAxis(), pos ? 0.5 : 1);
+            Vec3d pointA = Utils.withValue(Utils.VEC_ZERO, face.getAxis(), pos ? 0 : 0.5);
+            Vec3d pointB = Utils.withValue(Utils.VEC_ONE, face.getAxis(), pos ? 0.5 : 1);
             array[0] = Utils.boundingBox(pointA, pointB);
 
             pointA = Utils.vec3(0.25).add(Utils.convert(face, 0.25));

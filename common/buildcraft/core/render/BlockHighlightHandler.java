@@ -34,7 +34,7 @@ public class BlockHighlightHandler {
 
             if (block instanceof ICustomHighlight) {
                 AxisAlignedBB[] aabbs = ((ICustomHighlight) block).getBoxes(e.player.worldObj, pos, state);
-                Vec3 nPos = e.player.getPositionEyes(e.partialTicks).subtract(0, e.player.getEyeHeight(), 0);
+                Vec3d nPos = e.player.getPositionEyes(e.partialTicks).subtract(0, e.player.getEyeHeight(), 0);
 
                 // Highlight "breathing"
                 long millis = System.currentTimeMillis();

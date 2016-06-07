@@ -7,9 +7,9 @@ package buildcraft.core.properties;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.LongHashMap;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.ChunkPos;
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -33,7 +33,7 @@ public class DimensionProperty implements IWorldAccess {
         int zChunk = pos.getZ() >> 4;
 
         if (world.getChunkProvider().chunkExists(xChunk, zChunk)) {
-            long chunkId = ChunkCoordIntPair.chunkXZ2Int(xChunk, zChunk);
+            long chunkId = ChunkPos.chunkXZ2Int(xChunk, zChunk);
             ChunkProperty property;
             if (!chunkMapping.containsItem(chunkId)) {
                 property = new ChunkProperty(world, world.getHeight(), xChunk, zChunk);
@@ -70,7 +70,7 @@ public class DimensionProperty implements IWorldAccess {
         int xChunk = pos.getX() >> 4;
         int zChunk = pos.getZ() >> 4;
         if (world.getChunkProvider().chunkExists(xChunk, zChunk)) {
-            long chunkId = ChunkCoordIntPair.chunkXZ2Int(xChunk, zChunk);
+            long chunkId = ChunkPos.chunkXZ2Int(xChunk, zChunk);
 
             if (chunkMapping.containsItem(chunkId)) {
                 ChunkProperty property = chunkMapping.getValueByKey(chunkId);

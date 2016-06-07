@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -31,7 +31,7 @@ public class TravelingItem {
 
     public final EnumSet<EnumFacing> blacklist = EnumSet.noneOf(EnumFacing.class);
 
-    public Vec3 pos;
+    public Vec3d pos;
     public final int id;
     public boolean toCenter = true;
     public EnumDyeColor color;
@@ -63,7 +63,7 @@ public class TravelingItem {
         return make(maxId < Short.MAX_VALUE ? ++maxId : (maxId = Short.MIN_VALUE));
     }
 
-    public static TravelingItem make(Vec3 pos, ItemStack stack) {
+    public static TravelingItem make(Vec3d pos, ItemStack stack) {
         TravelingItem item = make();
         item.pos = pos;
         item.itemStack = stack.copy();
@@ -83,7 +83,7 @@ public class TravelingItem {
         return serverCache;
     }
 
-    public void movePosition(Vec3 toAdd) {
+    public void movePosition(Vec3d toAdd) {
         pos = pos.add(toAdd);
     }
 
@@ -142,7 +142,7 @@ public class TravelingItem {
 
     /* SAVING & LOADING */
     public void readFromNBT(NBTTagCompound data) {
-        pos = new Vec3(data.getDouble("x"), data.getDouble("y"), data.getDouble("z"));
+        pos = new Vec3d(data.getDouble("x"), data.getDouble("y"), data.getDouble("z"));
 
         setSpeed(data.getFloat("speed"));
         setItemStack(ItemStack.loadItemStackFromNBT(data.getCompoundTag("Item")));
@@ -187,7 +187,7 @@ public class TravelingItem {
                 return null;
             }
 
-            Vec3 motion = Utils.convert(output, 0.1 + getSpeed() * 2D);
+            Vec3d motion = Utils.convert(output, 0.1 + getSpeed() * 2D);
 
             EntityItem entity = new EntityItem(container.getWorld(), pos.xCoord, pos.yCoord, pos.zCoord, getItemStack());
             entity.lifespan = BuildCraftCore.itemLifespan * 20;

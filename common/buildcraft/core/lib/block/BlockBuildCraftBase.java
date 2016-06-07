@@ -273,12 +273,12 @@ public abstract class BlockBuildCraftBase extends Block {
 
     /** Exposed so subclasses can call Block's collision ray trace method without needing to resort to idk,
      * reflection? */
-    public MovingObjectPosition collisionRayTrace_super(World world, BlockPos pos, Vec3 origin, Vec3 direction) {
+    public MovingObjectPosition collisionRayTrace_super(World world, BlockPos pos, Vec3d origin, Vec3d direction) {
         return super.collisionRayTrace(world, pos, origin, direction);
     }
 
     @Override
-    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 origin, Vec3 direction) {
+    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3d origin, Vec3d direction) {
         IBlockState state = world.getBlockState(pos);
         AxisAlignedBB[] aabbs = getBoxes(world, pos, state);
         MovingObjectPosition closest = null;

@@ -2,7 +2,7 @@ package buildcraft.factory.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 import buildcraft.core.lib.EntityResizableCuboid;
 import buildcraft.core.lib.client.render.RenderResizableCuboid;
@@ -17,7 +17,7 @@ public class RenderPump extends TileEntitySpecialRenderer<TilePump> {
         Minecraft.getMinecraft().mcProfiler.startSection("tube");
         if (pump.tube != null) {
             EntityResizableCuboid cuboid = pump.tube;
-            Vec3 interp = Utils.getInterpolatedVec(cuboid, partialTicks);
+            Vec3d interp = Utils.getInterpolatedVec(cuboid, partialTicks);
             interp = interp.subtract(Utils.convert(pump.getPos()));
             interp = interp.addVector(x, y, z);
             RenderResizableCuboid.INSTANCE.doRender(cuboid, interp.xCoord, interp.yCoord, interp.zCoord, 0, partialTicks);

@@ -14,7 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.Vec3i;
 
 public class SchematicHanging extends SchematicEntity {
@@ -26,10 +26,10 @@ public class SchematicHanging extends SchematicEntity {
     }
 
     @Override
-    public void translateToBlueprint(Vec3 transform) {
+    public void translateToBlueprint(Vec3d transform) {
         super.translateToBlueprint(transform);
 
-        Vec3 pos = new Vec3(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
+        Vec3d pos = new Vec3d(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
         pos = pos.add(transform);
         Vec3i floored = Utils.convertFloor(pos);
         entityNBT.setInteger("TileX", floored.getX());
@@ -38,10 +38,10 @@ public class SchematicHanging extends SchematicEntity {
     }
 
     @Override
-    public void translateToWorld(Vec3 transform) {
+    public void translateToWorld(Vec3d transform) {
         super.translateToWorld(transform);
 
-        Vec3 pos = new Vec3(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
+        Vec3d pos = new Vec3d(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
         pos = pos.add(transform);
         Vec3i floored = Utils.convertFloor(pos);
         entityNBT.setInteger("TileX", floored.getX());
@@ -53,7 +53,7 @@ public class SchematicHanging extends SchematicEntity {
     public void rotateLeft(IBuilderContext context) {
         super.rotateLeft(context);
 
-        Vec3 pos = new Vec3(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
+        Vec3d pos = new Vec3d(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
         pos = context.rotatePositionLeft(pos);
         entityNBT.setInteger("TileX", (int) pos.xCoord);
         entityNBT.setInteger("TileY", (int) pos.yCoord);
@@ -94,7 +94,7 @@ public class SchematicHanging extends SchematicEntity {
 
     @Override
     public boolean isAlreadyBuilt(IBuilderContext context) {
-        Vec3 newPosition = new Vec3(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
+        Vec3d newPosition = new Vec3d(entityNBT.getInteger("TileX"), entityNBT.getInteger("TileY"), entityNBT.getInteger("TileZ"));
 
         int dir = entityNBT.getByte("Facing");
 
@@ -103,7 +103,7 @@ public class SchematicHanging extends SchematicEntity {
 
             if (e instanceof EntityHanging) {
                 EntityHanging h = (EntityHanging) e;
-                Vec3 existingPosition = new Vec3(h.chunkCoordX, h.chunkCoordY, h.chunkCoordZ);
+                Vec3d existingPosition = new Vec3d(h.chunkCoordX, h.chunkCoordY, h.chunkCoordZ);
 
                 if (existingPosition.distanceTo(newPosition) < 0.1F && EnumFacing.getFront(dir) == ((EntityHanging) e).facingDirection) {
                     return true;

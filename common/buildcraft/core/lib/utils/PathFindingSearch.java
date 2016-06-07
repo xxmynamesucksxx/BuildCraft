@@ -6,7 +6,7 @@ package buildcraft.core.lib.utils;
 
 import java.util.*;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import buildcraft.api.core.BuildCraftAPI;

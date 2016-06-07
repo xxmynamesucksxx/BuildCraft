@@ -310,7 +310,7 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
     }
 
     @Override
-    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3 origin, Vec3 direction) {
+    public MovingObjectPosition collisionRayTrace(World world, BlockPos pos, Vec3d origin, Vec3d direction) {
         RaytraceResult raytraceResult = doRayTrace(world, pos, origin, direction);
 
         if (raytraceResult == null) {
@@ -328,9 +328,9 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
         }
 
         double eyeHeight = player.getEyeHeight();
-        Vec3 lookVec = player.getLookVec();
-        Vec3 origin = new Vec3(player.posX, player.posY + eyeHeight, player.posZ);
-        Vec3 direction = origin.addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
+        Vec3d lookVec = player.getLookVec();
+        Vec3d origin = new Vec3d(player.posX, player.posY + eyeHeight, player.posZ);
+        Vec3d direction = origin.addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
 
         return doRayTrace(world, pos, origin, direction);
     }
@@ -338,8 +338,8 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
     private class TraceTester {
         final World world;
         final BlockPos pos;
-        final Vec3 origin;
-        final Vec3 direction;
+        final Vec3d origin;
+        final Vec3d direction;
 
         MovingObjectPosition closestHit = null;
         IdentifiableAABB<Part> closestBox = null;
@@ -347,7 +347,7 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
         EnumFacing closestSideHit = null;
         double distance = Double.POSITIVE_INFINITY;
 
-        public TraceTester(World world, BlockPos pos, Vec3 origin, Vec3 direction) {
+        public TraceTester(World world, BlockPos pos, Vec3d origin, Vec3d direction) {
             this.world = world;
             this.pos = pos;
             this.origin = origin;
@@ -371,7 +371,7 @@ public class BlockGenericPipe extends BlockBuildCraft implements IColorRemovable
         }
     }
 
-    public RaytraceResult doRayTrace(final World world, final BlockPos pos, final Vec3 origin, final Vec3 direction) {
+    public RaytraceResult doRayTrace(final World world, final BlockPos pos, final Vec3d origin, final Vec3d direction) {
         Pipe<?> pipe = getPipe(world, pos);
 
         if (!isValid(pipe)) {

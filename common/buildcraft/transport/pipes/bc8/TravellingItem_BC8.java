@@ -5,7 +5,7 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 import buildcraft.api.transport.pipe_bc8.*;
 import buildcraft.api.transport.pipe_bc8.IPipeContents.IPipeContentsItem;
@@ -50,7 +50,7 @@ public class TravellingItem_BC8 implements IPipeListener {
         tickFinished = now + (long) (time);
     }
 
-    public Vec3 interpolatePosition(Vec3 start, Vec3 end, long tick, float partialTicks) {
+    public Vec3d interpolatePosition(Vec3d start, Vec3d end, long tick, float partialTicks) {
         long diff = tickFinished - tickStarted;
         long nowDiff = tick - tickStarted;
         double sinceStart = nowDiff + partialTicks;
@@ -62,7 +62,7 @@ public class TravellingItem_BC8 implements IPipeListener {
         double x = oneMinus * start.xCoord + interpMul * end.xCoord;
         double y = oneMinus * start.yCoord + interpMul * end.yCoord;
         double z = oneMinus * start.zCoord + interpMul * end.zCoord;
-        return new Vec3(x, y, z);
+        return new Vec3d(x, y, z);
     }
 
     public boolean canBeGroupedWith(IPipeContentsItem other) {

@@ -27,7 +27,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.logging.log4j.Level;
@@ -72,12 +72,12 @@ public class PipeTransportItems extends PipeTransport implements IDebuggable {
     }
 
     private void readjustPosition(TravelingItem item) {
-        Vec3 middle = Utils.convertMiddle(container.getPos());
-        Vec3 littleBitBelow0Point5 = new Vec3(0.49, 0.49, 0.49);
-        Vec3 newPos = Utils.clamp(item.pos, middle.subtract(littleBitBelow0Point5), middle.add(littleBitBelow0Point5));
+        Vec3d middle = Utils.convertMiddle(container.getPos());
+        Vec3d littleBitBelow0Point5 = new Vec3d(0.49, 0.49, 0.49);
+        Vec3d newPos = Utils.clamp(item.pos, middle.subtract(littleBitBelow0Point5), middle.add(littleBitBelow0Point5));
 
         if (item.input.getAxis() != Axis.Y) {
-            newPos = new Vec3(newPos.xCoord, container.getPos().getY() + TransportUtils.getPipeFloorOf(item.getItemStack()), newPos.zCoord);
+            newPos = new Vec3d(newPos.xCoord, container.getPos().getY() + TransportUtils.getPipeFloorOf(item.getItemStack()), newPos.zCoord);
         }
 
         item.pos = newPos;
@@ -262,7 +262,7 @@ public class PipeTransportItems extends PipeTransport implements IDebuggable {
                 item.toCenter = false;
 
                 // Reajusting to the middle
-                item.pos = Utils.convert(container.getPos()).add(new Vec3(0.5, TransportUtils.getPipeFloorOf(item.getItemStack()), 0.5));
+                item.pos = Utils.convert(container.getPos()).add(new Vec3d(0.5, TransportUtils.getPipeFloorOf(item.getItemStack()), 0.5));
 
                 if (item.output == null) {
                     if (items.scheduleRemoval(item)) {
@@ -385,7 +385,7 @@ public class PipeTransportItems extends PipeTransport implements IDebuggable {
         // container.z() - 1;
     }
 
-    public Vec3 getPosition() {
+    public Vec3d getPosition() {
         return Utils.convert(container.getPos());
     }
 

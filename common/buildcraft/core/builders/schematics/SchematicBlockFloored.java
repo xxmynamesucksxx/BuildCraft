@@ -3,7 +3,7 @@ package buildcraft.core.builders.schematics;
 import buildcraft.api.blueprints.IBuilderContext;
 import buildcraft.api.blueprints.SchematicBlock;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
 

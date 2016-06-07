@@ -11,8 +11,8 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import buildcraft.BuildCraftCore;
@@ -61,7 +61,7 @@ public class TilePathMarker extends TileMarker implements IPathProvider {
         if (worldObj.isRemote) {
             return;
         }
-        Vec3 point5 = new Vec3(0.5, 0.5, 0.5);
+        Vec3d point5 = new Vec3d(0.5, 0.5, 0.5);
 
         LaserData laser = new LaserData(Utils.convert(pos).add(point5), Utils.convert(pathMarker.pos).add(point5));
 

@@ -11,7 +11,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.items.IItemCustomPipeRender;
@@ -62,7 +62,7 @@ public class PipeTransportRendererItems extends PipeTransportRenderer<PipeTransp
             }
 
             EnumFacing face = item.toCenter ? item.input : item.output;
-            Vec3 motion = Utils.convert(face, item.getSpeed() * f);
+            Vec3d motion = Utils.convert(face, item.getSpeed() * f);
 
             doRenderItem(item, x + item.pos.xCoord - pipe.container.getPos().getX() + motion.xCoord, y + item.pos.yCoord - pipe.container.getPos()
                     .getY() + motion.yCoord, z + item.pos.zCoord - pipe.container.getPos().getZ() + motion.zCoord, light, item.color);

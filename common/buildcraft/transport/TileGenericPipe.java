@@ -646,7 +646,7 @@ public class TileGenericPipe extends TileEntity implements IFluidHandler, IPipeT
         if (BlockGenericPipe.isValid(pipe) && pipe.transport instanceof PipeTransportItems && isPipeConnected(from) && pipe.inputOpen(from)) {
 
             if (doAdd) {
-                Vec3 itemPos = Utils.convertMiddle(getPos()).add(Utils.convert(from, 0.4));
+                Vec3d itemPos = Utils.convertMiddle(getPos()).add(Utils.convert(from, 0.4));
 
                 TravelingItem pipedItem = TravelingItem.make(itemPos, payload);
                 if (pipedItem.isCorrupted()) {
